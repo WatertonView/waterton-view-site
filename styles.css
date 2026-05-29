@@ -1,0 +1,78 @@
+:root {
+  --green:#2d5016;
+  --green2:#4a7c29;
+  --brown:#8B6914;
+  --brown2:#5C4033;
+  --cream:#FFF8E7;
+  --slate:#2C3E50;
+  --bg:#f4f9f0;
+  --radius:16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Segoe UI, Arial, sans-serif;
+  color: var(--slate);
+  background: var(--cream);
+}
+
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* HERO */
+.hero-image {
+  position: relative;
+  min-height: 72vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url('assets/waterton_hero_ultrawide_overlay_1920x823.jpg') center / cover no-repeat;
+}
+
+.hero-content {
+  position: relative;
+  color: white;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 44px;
+  margin-bottom: 10px;
+}
+
+.hero-content p {
+  font-size: 18px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* SECTIONS */
+.section {
+  padding: 50px 20px;
+}
+
+.section h2 {
+  color: var(--green);
+}
+
+/* BUTTON */
+button {
+  background: var(--green2);
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--green);
+}
