@@ -121,7 +121,6 @@ button{
 
 <script>
 
-// ✅ FIXED URL
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw32hUkqYJ_TFwyO0KlV7Fii1TOxWa1T3QTSXNM2eaqNxXK79lllHd7mZc6ZJgb7ubjCg/exec";
 
 const calendarEl = document.getElementById("calendar");
@@ -223,9 +222,8 @@ document.getElementById("prev").onclick = ()=>{
 
 document.getElementById("next").onclick = ()=>{
  if(currentIndex < months.length-2){currentIndex++;render();}
-}
+};
 
-// Load data
 fetch(WEB_APP_URL)
 .then(res => res.json())
 .then(data=>{
