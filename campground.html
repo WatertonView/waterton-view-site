@@ -8,17 +8,39 @@
 <link rel="stylesheet" href="styles.css"/>
 
 <style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+header {
+  background:#2c3e50;
+  color:white;
+  padding:15px;
+}
+
+.container {
+  max-width:1100px;
+  margin: auto;
+}
+
+.section {
+  padding:40px 20px;
+}
+
 .calendar-wrapper{
   display:grid;
   grid-template-columns:repeat(2,minmax(320px,1fr));
   gap:24px;
 }
+
 .month{
   background:#fff;
   border-radius:14px;
   padding:14px;
   box-shadow:0 6px 14px rgba(0,0,0,.12);
 }
+
 .weekdays{
   display:grid;
   grid-template-columns:repeat(7,1fr);
@@ -27,11 +49,13 @@
   font-size:12px;
   margin-bottom:6px;
 }
+
 .days{
   display:grid;
   grid-template-columns:repeat(7,1fr);
   gap:6px;
 }
+
 .day{
   min-height:78px;
   border-radius:10px;
@@ -40,11 +64,13 @@
   padding:6px;
   display:flex;
   flex-direction:column;
+  justify-content:center;
   align-items:center;
 }
+
 .day.empty{background:none;border:none;}
 .day.past{background:#eee;color:#999;}
-.day.closed{background:#e5e5e5;}
+.day.closed{background:#e5e5e5;color:#777;}
 .day.full{background:#f8d7da;color:#a33;}
 .day.available{background:#dff0d8;}
 
@@ -60,13 +86,26 @@ button{
   border:none;
   padding:10px 14px;
   border-radius:8px;
+  cursor:pointer;
+}
+
+.month h3{
+  text-align:center;
+  margin-bottom:10px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="section">
+<!-- ✅ HEADER ADDED BACK -->
+<header>
+  <div class="container">
+    <h1 style="margin:0;">Waterton View Adventure & RV Park</h1>
+  </div>
+</header>
+
+<section class="section">
 <div class="container">
 
 <h2>Daily Camping Availability</h2>
@@ -79,10 +118,11 @@ button{
 <div id="calendar" class="calendar-wrapper"></div>
 
 </div>
-</div>
+</section>
 
 <script>
 
+// ✅ CLEAN URL (removed HTML anchor issue)
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw32hUkqYJ_TFwyO0KlV7Fii1TOxWa1T3QTSXNM2eaqNxXK79lllHd7mZc6ZJgb7ubjCg/exec";
 
 const calendarEl = document.getElementById("calendar");
@@ -92,6 +132,7 @@ today.setHours(0,0,0,0);
 
 let calendarData = {};
 
+// ✅ FIXED DATE MATCHING
 function formatKey(d){
   d.setHours(0,0,0,0);
   const y = d.getFullYear();
@@ -126,10 +167,11 @@ for(let i=0;i<24;i++){
 }
 
 let currentIndex = months.findIndex(m =>
-  m.getMonth()===today.getMonth() &&
-  m.getFullYear()===today.getFullYear()
+  m.getMonth() === today.getMonth() &&
+  m.getFullYear() === today.getFullYear()
 );
 
+// ✅ RENDER
 function render(){
   calendarEl.innerHTML="";
 
@@ -147,49 +189,57 @@ function render(){
     <div class="weekdays">
     <div>Sun</div><div>Mon</div><div>Tue</div>
     <div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
-    </div><div class="days">`;
+    </div>
+    <div class="days">`;
 
     for(let i=0;i<firstDay.getDay();i++){
-      html+=`<div class="day empty"></div>`;
+      html += `<div class="day empty"></div>`;
     }
 
-    for(let d=1;d<=lastDay.getDate();d++){
+    for(let d=1; d<=lastDay.getDate(); d++){
       const date = new Date(month.getFullYear(),month.getMonth(),d);
       const s = getState(date);
 
-      let cls="day "+s.status;
-      let text="";
+      let cls = "day " + s.status;
+      let text = "";
 
-      if(s.status==="available") text=s.available;
-      if(s.status==="full") text="0";
-      if(s.status==="closed") text="Closed";
+      if(s.status === "available") text = s.available;
+      if(s.status === "full") text = "0";
+      if(s.status === "closed") text = "Closed";
 
-      html+=`
+      html += `
       <div class="${cls}">
         <div>${d}</div>
         <div>${text}</div>
       </div>`;
     }
 
-    html+="</div>";
-    div.innerHTML=html;
+    html += "</div>";
+    div.innerHTML = html;
     calendarEl.appendChild(div);
   });
 }
 
-// navigation
-document.getElementById("prev").onclick=()=>{
- if(currentIndex>0){currentIndex--;render();}
-}
-document.getElementById("next").onclick=()=>{
- if(currentIndex<months.length-2){currentIndex++;render();}
+// Navigation
+document.getElementById("prev").onclick = ()=>{
+ if(currentIndex > 0){
+   currentIndex--;
+   render();
+ }
 }
 
-// load data
+document.getElementById("next").onclick = ()=>{
+ if(currentIndex < months.length-2){
+   currentIndex++;
+   render();
+ }
+}
+
+// Load data
 fetch(WEB_APP_URL)
-.then(res=>res.json())
+.then(res => res.json())
 .then(data=>{
-  calendarData=data.daily||{};
+  calendarData = data.daily || {};
   render();
 })
 .catch(()=>{
